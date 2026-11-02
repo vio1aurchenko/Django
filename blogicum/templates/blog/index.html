@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %} First {% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h1>Лента записей</h1>
+  {% for post in page_obj %}
+    <hr>
+    <ul>
+      <li><h5>Название: {{ post.title }}</h5></li>
+      <li><h6><a href="{% url 'blog:category' post.category.id %}">Категория:</a>  {{ post.category.title }}</h6></li>
+      <li><a href="{% url 'blog:detail' post.id %}">Текст: </a>{{ post.text|truncatewords:10 }}</li>
+      {% if forloop.last %}
+        <hr>
+      {% endif %}
+
+    </ul>
+    <p>
+      <a href="{% url 'blog:edit_post' post.id %}">&#9999;</a>
+      <a href="{% url 'blog:delete_post' post.id %}">🗑️</a>
+    </p>
+  {% empty %}
+    <h3>Записи не выбраны</h3>
+
+  {% endfor %}
+  <a href="{% url 'blog:create_post' %}">Добавить пост</a>
+</div>
+
+{% endblock %}
